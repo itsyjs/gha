@@ -1,0 +1,12 @@
+{
+  "name": "@itsy/gha",
+  "version": "1.0.0",
+  "description": "a tiny GitHub Actions helper",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "keywords": ["github", "actions"],
+  "author": "@pearofducks",
+  "license": "MIT"
+}
