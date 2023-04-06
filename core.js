@@ -1,3 +1,6 @@
+import { issueCommand, issue } from './command.js'
+import { EOL } from 'node:os'
+
 export function getInput(name, options = {}) {
   const v = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || ''
   if (options.required && !v) throw new Error(`Input required and not supplied: ${name}`)
@@ -19,3 +22,13 @@ export function getBooleanInput(name, options = {}) {
       `Support boolean input list: \`true | True | TRUE | false | False | FALSE\``
   )
 }
+
+// Note: not handling message properties for now
+const logWithErrorHandling = (cmd, m) => issueCommand(cmd, {}, m instanceof Error ? m.toString() : m)
+export function info(message) { process.stdout.write(message + EOL) }
+export function debug(message) { issueCommand('debug', {}, message) }
+export function error(message) { logWithErrorHandling('error', message) }
+export function warning(message) { logWithErrorHandling('warning', message) }
+export function notice(message) { logWithErrorHandling('notice', message) }
+export function startGroup(name) { issue('group', name) }
+export function endGroup() { issue('endgroup') }
