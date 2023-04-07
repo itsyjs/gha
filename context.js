@@ -21,10 +21,13 @@ export class Context {
     this.actor = process.env.GITHUB_ACTOR
     this.workflow = process.env.GITHUB_WORKFLOW
     this.action = process.env.GITHUB_ACTION
+    this.actionPath = process.env.GITHUB_ACTION_PATH
     this.eventName = process.env.GITHUB_EVENT_NAME
     this.refName = process.env.GITHUB_REF_NAME
     this.refProtected = process.env.GITHUB_REF_PROTECTED === 'true'
     this.refType = process.env.GITHUB_REF_TYPE
+    this.workspace = process.env.GITHUB_WORKSPACE
+    this.temp = process.env.RUNNER_TEMP
 
     this.serverUrl = process.env.GITHUB_SERVER_URL ?? `https://github.com`
     this.apiUrl = process.env.GITHUB_API_URL ?? `https://api.github.com`

@@ -25,14 +25,18 @@ declare class Context {
   actor: string;
   workflow: string;
   action: string;
+  actionPath: string;
   eventName: string;
   refName: string;
   refProtected: boolean;
   refType: string;
+  workspace: string;
+  temp: string;
 
   serverUrl: string;
   apiUrl: string;
   graphqlUrl: string;
+
 
   constructor();
   get issue(): {
