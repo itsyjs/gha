@@ -1,4 +1,5 @@
-import { issueCommand, issue } from './command.js'
+import { issueCommand, issue, toCommandValue } from './command.js'
+import { issueFileCommand, prepareKeyValueMessage } from './file-command.js'
 import { EOL } from 'node:os'
 
 export function getInput(name, options = {}) {
@@ -23,6 +24,13 @@ export function getBooleanInput(name, options = {}) {
   )
 }
 
+export function setOutput(name, value) {
+  const filePath = process.env['GITHUB_OUTPUT'] || ''
+  if (filePath) return issueFileCommand('OUTPUT', prepareKeyValueMessage(name, value))
+  process.stdout.write(EOL)
+  issueCommand('set-output', { name }, toCommandValue(value))
+}
+
 // Note: not handling message properties for now
 const logWithErrorHandling = (cmd, m) => issueCommand(cmd, {}, m instanceof Error ? m.toString() : m)
 export function info(message) { process.stdout.write(message + EOL) }
@@ -30,5 +38,10 @@ export function debug(message) { issueCommand('debug', {}, message) }
 export function error(message) { logWithErrorHandling('error', message) }
 export function warning(message) { logWithErrorHandling('warning', message) }
 export function notice(message) { logWithErrorHandling('notice', message) }
+export function setFailed(message) {
+  process.exitCode = 1
+  error(message)
+}
 export function startGroup(name) { issue('group', name) }
 export function endGroup() { issue('endgroup') }
+

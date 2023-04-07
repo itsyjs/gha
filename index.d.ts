@@ -3,11 +3,13 @@ interface GetInputOpts { required?: boolean; }
 export declare function getInput(name: string, options: GetInputOpts): string;
 export declare function getMultilineInput(name: string, options: GetInputOpts): string[];
 export declare function getBooleanInput(name: string, options: GetInputOpts): boolean;
+export declare function setOutput(name: string, value: any): void;
 export declare function info(message: string): void;
 export declare function debug(message: string): void;
 export declare function error(message: string | Error): void;
 export declare function warning(message: string | Error): void;
 export declare function notice(message: string | Error): void;
+export declare function setFailed(message: string | Error): void;
 export declare function startGroup(name: string | Error): void;
 export declare function endGroup(): void;
 
