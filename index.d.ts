@@ -5,11 +5,11 @@ export declare function getMultilineInput(name: string, options: GetInputOpts): 
 export declare function getBooleanInput(name: string, options: GetInputOpts): boolean;
 export declare function setOutput(name: string, value: any): void;
 export declare function info(message: string): void;
-export declare function debug(message: string): void;
-export declare function error(message: string | Error): void;
-export declare function warning(message: string | Error): void;
-export declare function notice(message: string | Error): void;
-export declare function setFailed(message: string | Error): void;
+export declare function debug(message: string | Error, props: AnnotationProperties = {}): void;
+export declare function error(message: string | Error, props: AnnotationProperties = {}): void;
+export declare function warning(message: string | Error, props: AnnotationProperties = {}): void;
+export declare function notice(message: string | Error, props: AnnotationProperties = {}): void;
+export declare function setFailed(message: string | Error, props: AnnotationProperties = {}): void;
 export declare function startGroup(name: string | Error): void;
 export declare function endGroup(): void;
 
@@ -128,4 +128,23 @@ interface PayloadCommit {
   timestamp: string;
   tree_id: string;
   url: string;
+}
+
+/**
+ * Optional properties that can be sent with annotation commands (notice, error, and warning)
+ * See: https://docs.github.com/en/rest/reference/checks#create-a-check-run for more information about annotations.
+ */
+export interface AnnotationProperties {
+  /** A title for the annotation. */
+  title?: string
+  /** The path of the file for which the annotation should be created. */
+  file?: string
+  /** The start line for the annotation. */
+  startLine?: number
+  /** The end line for the annotation. Defaults to `startLine` when `startLine` is provided. */
+  endLine?: number
+  /** The start column for the annotation. Cannot be sent when `startLine` and `endLine` are different values. */
+  startColumn?: number
+  /** The end column for the annotation. Cannot be sent when `startLine` and `endLine` are different values. */
+  endColumn?: number
 }

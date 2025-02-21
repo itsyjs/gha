@@ -31,16 +31,24 @@ export function setOutput(name, value) {
   issueCommand('set-output', { name }, toCommandValue(value))
 }
 
-// Note: not handling message properties for now
-const logWithErrorHandling = (cmd, m) => issueCommand(cmd, {}, m instanceof Error ? m.toString() : m)
+const handleMessage = m => m instanceof Error ? m.toString() : m
+// this is a more basic implementation of toCommandProperties in actions/toolkit
+const handleProperties = props => ({
+  title: props.title,
+  file: props.file,
+  line: props.startLine,
+  endLine: props.endLine,
+  col: props.startColumn,
+  endColumn: props.endColumn
+})
 export function info(message) { process.stdout.write(message + EOL) }
-export function debug(message) { issueCommand('debug', {}, message) }
-export function error(message) { logWithErrorHandling('error', message) }
-export function warning(message) { logWithErrorHandling('warning', message) }
-export function notice(message) { logWithErrorHandling('notice', message) }
-export function setFailed(message) {
+export function debug(message, props = {}) { issueCommand('debug', handleProperties(props), handleMessage(message)) }
+export function error(message, props = {}) { issueCommand('error', handleProperties(props), handleMessage(message)) }
+export function warning(message, props = {}) { issueCommand('warning', handleProperties(props), handleMessage(message)) }
+export function notice(message, props = {}) { issueCommand('notice', handleProperties(props), handleMessage(message)) }
+export function setFailed(message, props = {}) {
   process.exitCode = 1
-  error(message)
+  error(message, props)
 }
 export function startGroup(name) { issue('group', name) }
 export function endGroup() { issue('endgroup') }
